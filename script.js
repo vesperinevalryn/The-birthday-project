@@ -31,8 +31,8 @@ let pendingLetterCard = null;
 let pendingScreenshot = null;
 
 // Set your passwords here
-const LETTERS_PASSWORD = "babygirl"; // Change this to your desired password
-const SCREENSHOTS_PASSWORD = "memories"; // Change this to your desired password
+const LETTERS_PASSWORD = "buttercup"; // Change this to your desired password
+const SCREENSHOTS_PASSWORD = "tea"; // Change this to your desired password
 
 const dontTouchMessages = [
   "Why don't you listen to me? 😤",
@@ -273,7 +273,7 @@ function createSparkles() {
     const container = document.querySelector('.sparkles-container');
     if (!container) return;
     
-    const sparkleEmojis = ['✨', '⭐', '💫', '🌟'];
+    const sparkleEmojis = ['✨', '⭐','🌸', '💫', '🌷','🌟'];
     
     for (let i = 0; i < 20; i++) {
         const sparkle = document.createElement('div');
@@ -583,7 +583,7 @@ function generateFakeMath(name, birthdate, color, number, percentage) {
         Formula: (${nameValue} + ${birthValue} + ${colorValue}) × ${number} ÷ cosmic_constant
         Result: ${percentage}% love deserved
         
-        Status: ${percentage === 100 ? 'UNIVERSE LOVES YOU! 💜' : percentage >= 80 ? 'HIGHLY LOVED! 💕' : 'DEFINITELY LOVED! 💖'}
+        Status: ${percentage === 100 ? 'UNIVERSE LOVES YOU! 🐇🌷💜' : percentage >= 80 ? 'HIGHLY LOVED!🐇🌷 💕' : 'DEFINITELY LOVED! 🐇🌷💖'}
     `;
 }
 
@@ -622,7 +622,7 @@ function showLoveResult(percentage, fakeMath, isPrabhas) {
 }
 
 function createHeartExplosion() {
-    const hearts = ['💜', '💖', '💕', '💗', '💝'];
+    const hearts = ['💜', '💖', '💕', '💗', '💝','🐇','🌷'];
     const container = document.querySelector('.calculator-container');
     
     for (let i = 0; i < 20; i++) {
