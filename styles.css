@@ -1329,3 +1329,139 @@ body {
   cursor: pointer;
   z-index: 10;
 }
+
+/* Password Modal Styles */
+.password-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2500;
+    transition: opacity 0.3s ease;
+}
+
+.password-modal.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.password-content {
+    background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+    border: 3px solid var(--neon-pink);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255, 0, 255, 0.5);
+    animation: modalPulse 2s ease-in-out infinite;
+}
+
+@keyframes modalPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.password-header h3 {
+    font-family: 'Orbitron', monospace;
+    color: var(--neon-pink);
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    text-shadow: 0 0 20px currentColor;
+}
+
+.password-header p {
+    color: var(--lavender);
+    margin-bottom: 25px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem;
+}
+
+.password-form {
+    margin-bottom: 20px;
+}
+
+#letters-password-input,
+#screenshots-password-input {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 0, 255, 0.1);
+    border: 2px solid var(--primary-purple);
+    border-radius: 10px;
+    color: var(--lavender);
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+#letters-password-input:focus,
+#screenshots-password-input:focus {
+    outline: none;
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+    background: rgba(255, 0, 255, 0.2);
+}
+
+.password-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.password-error {
+    color: #ff6b6b;
+    font-family: 'Orbitron', monospace;
+    font-weight: bold;
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid #ff6b6b;
+    border-radius: 8px;
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Add locked state for letter cards */
+.letter-card.locked {
+    opacity: 0.7;
+    position: relative;
+}
+
+.letter-card.locked::before {
+    content: '🔐';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    z-index: 10;
+    color: var(--neon-pink);
+    text-shadow: 0 0 20px currentColor;
+    pointer-events: none;
+}
+
+/* Add locked state for screenshots */
+.screenshot-img.locked {
+    filter: blur(10px);
+    opacity: 0.6;
+    position: relative;
+}
+
+.screenshot-img.locked::after {
+    content: '🔐';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: var(--neon-pink);
+    text-shadow: 0 0 20px currentColor;
+    pointer-events: none;
+}
