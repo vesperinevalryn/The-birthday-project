@@ -25,6 +25,15 @@ let currentSection = 'home';
 let musicPlaying = false;
 let konamiCode = [];
 let dontTouchClicks = 0;
+let lettersUnlocked = false;
+let screenshotsUnlocked = false;
+let pendingLetterCard = null;
+let pendingScreenshot = null;
+
+// Set your passwords here
+const LETTERS_PASSWORD = "babygirl"; // Change this to your desired password
+const SCREENSHOTS_PASSWORD = "memories"; // Change this to your desired password
+
 const dontTouchMessages = [
   "Why don't you listen to me? 😤",
   "I'm getting angry now! 😠"
@@ -92,6 +101,7 @@ function init() {
     setupEventListeners();
     createStars();
     setupKonamiCode();
+    initializePasswordProtection();
 }
 
 function setupEventListeners() {
@@ -332,8 +342,13 @@ function navigateToSection(sectionId) {
 }
 
 function animateLetterCard(card, animation) {
-    if (card.classList.contains('animated')) return;
+    if (!lettersUnlocked) {
+        pendingLetterCard = { card, animation };
+        showPasswordModal('letters');
+        return;
+    }
     
+    if (card.classList.contains('animated')) return;
     card.classList.add('animated');
     
     switch (animation) {
@@ -376,6 +391,128 @@ function animateLetterCard(card, animation) {
             }, 50);
             break;
     }
+}
+
+// Password modal functions
+function showPasswordModal(type) {
+    const modal = document.getElementById(`${type}-password-modal`);
+    const input = document.getElementById(`${type}-password-input`);
+    const error = document.getElementById(`${type}-password-error`);
+    
+    modal.classList.remove('hidden');
+    input.focus();
+    error.classList.add('hidden');
+    input.value = '';
+    
+    // Allow Enter key to submit
+    input.onkeypress = function(e) {
+        if (e.key === 'Enter') {
+            if (type === 'letters') checkLettersPassword();
+            else checkScreenshotsPassword();
+        }
+    };
+}
+
+function closePasswordModal(type) {
+    const modal = document.getElementById(`${type}-password-modal`);
+    modal.classList.add('hidden');
+    
+    // Clear pending actions
+    if (type === 'letters') pendingLetterCard = null;
+    if (type === 'screenshots') pendingScreenshot = null;
+}
+
+function checkLettersPassword() {
+    const input = document.getElementById('letters-password-input');
+    const error = document.getElementById('letters-password-error');
+    
+    if (input.value.toLowerCase().trim() === LETTERS_PASSWORD.toLowerCase()) {
+        lettersUnlocked = true;
+        closePasswordModal('letters');
+        
+        // Remove lock icons from all letters
+        document.querySelectorAll('.letter-card').forEach(card => {
+            card.classList.remove('locked');
+        });
+        
+        // Execute pending action
+        if (pendingLetterCard) {
+            const { card, animation } = pendingLetterCard;
+            animateLetterCard(card, animation);
+            pendingLetterCard = null;
+        }
+        
+        // Show success message
+        showSuccessMessage('Letters unlocked! 💜');
+        
+    } else {
+        error.classList.remove('hidden');
+        input.style.animation = 'shake 0.5s ease-in-out';
+        input.value = '';
+        setTimeout(() => {
+            input.style.animation = '';
+        }, 500);
+    }
+}
+
+function checkScreenshotsPassword() {
+    const input = document.getElementById('screenshots-password-input');
+    const error = document.getElementById('screenshots-password-error');
+    
+    if (input.value.toLowerCase().trim() === SCREENSHOTS_PASSWORD.toLowerCase()) {
+        screenshotsUnlocked = true;
+        closePasswordModal('screenshots');
+        
+        // Remove blur from all screenshots
+        document.querySelectorAll('.screenshot-img').forEach(img => {
+            img.classList.remove('locked');
+        });
+        
+        // Execute pending action
+        if (pendingScreenshot) {
+            openLightbox(pendingScreenshot);
+            pendingScreenshot = null;
+        }
+        
+        // Show success message
+        showSuccessMessage('Screenshots unlocked! 📸');
+        
+    } else {
+        error.classList.remove('hidden');
+        input.style.animation = 'shake 0.5s ease-in-out';
+        input.value = '';
+        setTimeout(() => {
+            input.style.animation = '';
+        }, 500);
+    }
+}
+
+function showSuccessMessage(message) {
+    const successDiv = document.createElement('div');
+    successDiv.innerHTML = message;
+    successDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--neon-pink);
+        color: #000;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-family: 'Orbitron', monospace;
+        font-weight: bold;
+        z-index: 3000;
+        box-shadow: 0 0 25px rgba(255, 0, 255, 0.5);
+        animation: slideIn 0.5s ease-out;
+    `;
+    
+    document.body.appendChild(successDiv);
+    
+    setTimeout(() => {
+        successDiv.style.animation = 'slideOut 0.5s ease-in forwards';
+        setTimeout(() => {
+            document.body.removeChild(successDiv);
+        }, 500);
+    }, 3000);
 }
 
 function openLightbox(item) {
@@ -689,6 +826,33 @@ function initBackgroundMusic() {
     
     // You can add a real audio file here:
     // backgroundMusic.src = 'path/to/your/background-music.mp3';
+}
+
+// Initialize password protection
+function initializePasswordProtection() {
+    // Lock all letter cards initially
+    document.querySelectorAll('.letter-card').forEach(card => {
+        card.classList.add('locked');
+    });
+    
+    // Lock all screenshots initially
+    document.querySelectorAll('.screenshot-img').forEach(img => {
+        img.classList.add('locked');
+        // Update click handler to check for unlock
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!screenshotsUnlocked) {
+                pendingScreenshot = this;
+                showPasswordModal('screenshots');
+                return;
+            }
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.querySelector('.lightbox-image');
+            lightboxImage.innerHTML = `<img src="${this.src}" alt="${this.alt}">`;
+            lightbox.classList.remove('hidden');
+        });
+    });
 }
 
 // Call initialization

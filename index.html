@@ -554,6 +554,46 @@ I am not making efforts towards us because if i do make efforts and i get more a
     </audio>
     <audio id="birthday-audio" src="blueprint-supreme.mp3"></audio>
 
+    <!-- Letters Password Modal -->
+    <div id="letters-password-modal" class="password-modal hidden">
+        <div class="password-content">
+            <div class="password-header">
+                <h3>🔐 Letters Access</h3>
+                <p>These are personal letters. Enter password to continue:</p>
+            </div>
+            <div class="password-form">
+                <input type="password" id="letters-password-input" placeholder="Enter password..." maxlength="50">
+                <div class="password-buttons">
+                    <button class="neon-button small" onclick="checkLettersPassword()">Unlock</button>
+                    <button class="neon-button small" onclick="closePasswordModal('letters')">Cancel</button>
+                </div>
+            </div>
+            <div id="letters-password-error" class="password-error hidden">
+                ❌ Wrong password! Try again...
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshots Password Modal -->
+    <div id="screenshots-password-modal" class="password-modal hidden">
+        <div class="password-content">
+            <div class="password-header">
+                <h3>🔸 Screenshots Access</h3>
+                <p>These are private memories. Enter password to continue:</p>
+            </div>
+            <div class="password-form">
+                <input type="password" id="screenshots-password-input" placeholder="Enter password..." maxlength="50">
+                <div class="password-buttons">
+                    <button class="neon-button small" onclick="checkScreenshotsPassword()">Unlock</button>
+                    <button class="neon-button small" onclick="closePasswordModal('screenshots')">Cancel</button>
+                </div>
+            </div>
+            <div id="screenshots-password-error" class="password-error hidden">
+                ❌ Wrong password! Try again...
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
   const correctAnswers = {
